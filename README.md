@@ -1,37 +1,11 @@
-# Docker Container for XXX
-This repository is a template for custom docker files.
+# Docker Container for purpose build PHP-FPM installations
+This repository provides purpose build [php-fpm](https://hub.docker.com/_/php) container, with pre-installed dependencies and PHP extensions.
+
+The following projects use these services:
+  - `php:7-wiki`:
+    - [steilerDev/dokuwiki-docker](https://github.com/steilerDev/dokuwiki-docker) ([Requirements](https://www.dokuwiki.org/requirements))
+  - `php:7-rss`:
+    - [steilerDev/tt-rss-docker](https://github.com/steilerDev/tt-rss-docker) ([Requirements](https://tt-rss.org/wiki/PhpCompatibilityNotes))
 
 # Configuration options
-## Environment Variables
-The following environmental variables can be used for configuration:
-
- - `VAR`  
-    Description for var  
-    Accepted options
-
-## Volume Mounts
-The following paths are recommended for persisting state and/or accessing configurations
-
- - `/some-path/` 
-    Description on usage
-
-# docker-compose example
-Usage with `nginx-proxy` inside of predefined `steilerGroup` network.
-
-```
-version: '2'
-services:
-  <service-name>:
-    image: steilerdev/<pkg-name>:latest
-    container_name: <docker-name>
-    restart: unless-stopped
-    hostname: "<hostname>"
-    environment:
-      VAR: "value"
-    volumes:
-      - /<some-host-path>:/<some-docker-path>
-networks:
-  default:
-    external:
-      name: steilerGroup
-```
+No configuration options
