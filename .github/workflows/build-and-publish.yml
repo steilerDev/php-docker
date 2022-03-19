@@ -59,7 +59,7 @@ jobs:
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
-            if [ -f ${d%/}Dockerfile ]; then
+            if [ -f ${d%/}/Dockerfile ]; then
               docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
             fi
           done
@@ -84,12 +84,13 @@ jobs:
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PWD}}
     - name: Build the Docker image
       run: |
-        if [ -f ./Dockerfile ]; then
+        if [ -f Dockerfile ]; then
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
+          ls -al
           for d in */ ; do
-            ls -al
-            if [ -f ${d%/}Dockerfile ]; then
+            if [ -f ${d%/}/Dockerfile ]; then
+              ls -al 
               docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
             fi
           done
