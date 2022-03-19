@@ -49,8 +49,6 @@ jobs:
       uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v2
-      with:
-        path: ./
     - name: Login to Docker Registry
       run: docker login ${{secrets.DOCKER_DEV_HOST}} -u ${{secrets.DOCKER_DEV_USERNAME}} -p ${{secrets.DOCKER_DEV_PWD}}
     - name: Build the Docker image
@@ -60,6 +58,10 @@ jobs:
         else
           for d in */ ; do
             if [ -f ${d%/}/Dockerfile ]; then
+              if [ -f rootfs/${d%/}/rootfs.tar.gz ]; then
+                echo "Moving rootfs.tar.gz..."
+                mv rootfs/${d%/}/rootfs.tar.gz ${d}
+              fi
               docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
             fi
           done
@@ -78,8 +80,6 @@ jobs:
       uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v2
-      with:
-        path: ./
     - name: Login to DockerHub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PWD}}
     - name: Build the Docker image
@@ -90,6 +90,10 @@ jobs:
           ls -al
           for d in */ ; do
             if [ -f ${d%/}/Dockerfile ]; then
+              if [ -f rootfs/${d%/}/rootfs.tar.gz ]; then
+                echo "Moving rootfs.tar.gz..."
+                mv rootfs/${d%/}/rootfs.tar.gz ${d}
+              fi
               echo
               echo ############
               ls -al ${d}
