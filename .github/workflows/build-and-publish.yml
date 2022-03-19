@@ -53,7 +53,7 @@ jobs:
       run: docker login ${{secrets.DOCKER_DEV_HOST}} -u ${{secrets.DOCKER_DEV_USERNAME}} -p ${{secrets.DOCKER_DEV_PWD}}
     - name: Build the Docker image
       run: |
-        if [ -f ./rootfs.tar.gz]; then
+        if [ -f ./rootfs.tar.gz ]; then
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
@@ -79,7 +79,7 @@ jobs:
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PWD}}
     - name: Build the Docker image
       run: |
-        if [ -f ./rootfs.tar.gz]; then
+        if [ -f ./rootfs.tar.gz ]; then
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
