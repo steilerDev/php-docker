@@ -29,7 +29,7 @@ jobs:
           tar -C ./rootfs -czf ./rootfs.tar.gz ./
         else
           for d in */ ; do
-            tar -C ./$d/rootfs -czf ./$d/rootfs.tar.gz ./
+            tar -C ${d%/}/rootfs -czf ${d%/}/rootfs.tar.gz ./
           done
         fi
     - name: Upload docker artifacts
@@ -57,9 +57,10 @@ jobs:
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
-            docker build . --file $d/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:$d
+            docker build . --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
           done
         fi
+        docker image ls
     #- name: Push to DockerHub
     #  run: docker image push --all-tags ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME
 
@@ -83,9 +84,10 @@ jobs:
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
-            docker build . --file $d/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:$d
+            docker build . --file ${d%/}Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
           done
         fi
+        docker image ls
     #- name: Push to DockerHub
     #  run: docker image push --all-tags ${{secrets.DOCKER_USERNAME}}/$PKG_NAME
     #- name: Update DockerHub readme
