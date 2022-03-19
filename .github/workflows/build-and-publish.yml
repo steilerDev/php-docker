@@ -67,8 +67,8 @@ jobs:
           done
         fi
         docker image ls
-    #- name: Push to DockerHub
-    #  run: docker image push --all-tags ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME
+    - name: Push to DockerHub
+      run: docker image push --all-tags ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME
 
   publish-dockerhub:
     name: Publish Project to DockerHub
@@ -87,30 +87,23 @@ jobs:
         if [ -f Dockerfile ]; then
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
-          ls -al
           for d in */ ; do
             if [ -f ${d%/}/Dockerfile ]; then
               if [ -f rootfs/${d%/}/rootfs.tar.gz ]; then
-                echo "Moving rootfs.tar.gz..."
                 mv rootfs/${d%/}/rootfs.tar.gz ${d}
               fi
-              echo
-              echo ############
-              ls -al ${d}
-              echo ############
-              echo
               docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
             fi
           done
         fi
         docker image ls
-    #- name: Push to DockerHub
-    #  run: docker image push --all-tags ${{secrets.DOCKER_USERNAME}}/$PKG_NAME
-    #- name: Update DockerHub readme
-    #  uses: peter-evans/dockerhub-description@v2
-    #  with:
-    #    username: ${{ secrets.DOCKER_USERNAME }}
-    #    password: ${{ secrets.DOCKER_PWD }}
-    #    repository: ${{secrets.DOCKER_USERNAME}}/${{env.PKG_NAME}}
-    #    readme-filepath: ./README.md
-    #    short-description: ${{ github.event.repository.description }}
+    - name: Push to DockerHub
+      run: docker image push --all-tags ${{secrets.DOCKER_USERNAME}}/$PKG_NAME
+    - name: Update DockerHub readme
+      uses: peter-evans/dockerhub-description@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PWD }}
+        repository: ${{secrets.DOCKER_USERNAME}}/${{env.PKG_NAME}}
+        readme-filepath: ./README.md
+        short-description: ${{ github.event.repository.description }}
