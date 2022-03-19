@@ -88,6 +88,7 @@ jobs:
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
+            ls -al
             if [ -f ${d%/}Dockerfile ]; then
               docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
             fi
