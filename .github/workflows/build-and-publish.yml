@@ -90,7 +90,11 @@ jobs:
           ls -al
           for d in */ ; do
             if [ -f ${d%/}/Dockerfile ]; then
-              ls -al 
+              echo
+              echo ############
+              ls -al ${d}
+              echo ############
+              echo
               docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
             fi
           done

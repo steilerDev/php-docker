@@ -1,11 +1,15 @@
-FROM docker.steilergroup.net/php:7-mysql-gd
-
-RUN apt-get update \
-    && apt-get install \
+FROM php:7-fpm
+ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get install \
         --no-install-recommends \
         --fix-missing \
         --assume-yes \
-            libxml2-dev libcurl4-gnutls-dev libonig-dev && \
-        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
- 
-RUN docker-php-ext-install opcache mbstring xml intl json curl fileinfo pcntl
+            libpng-dev freetype* libxml2-dev libcurl4-gnutls-dev libonig-dev && \
+    apt-get clean autoclean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql gd opcache mbstring xml intl json curl fileinfo pcntl
