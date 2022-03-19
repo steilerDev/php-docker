@@ -29,7 +29,9 @@ jobs:
           tar -C ./rootfs -czf ./rootfs.tar.gz ./
         else
           for d in */ ; do
-            tar -C ${d%/}/rootfs -czf ${d%/}/rootfs.tar.gz ./
+            if [ -d ${d%/}/rootfs ]; then
+              tar -C ${d%/}/rootfs -czf ${d%/}/rootfs.tar.gz ./
+            fi
           done
         fi
     - name: Upload docker artifacts
@@ -53,11 +55,13 @@ jobs:
       run: docker login ${{secrets.DOCKER_DEV_HOST}} -u ${{secrets.DOCKER_DEV_USERNAME}} -p ${{secrets.DOCKER_DEV_PWD}}
     - name: Build the Docker image
       run: |
-        if [ -f ./rootfs.tar.gz ]; then
+        if [ -f ./Dockerfile ]; then
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
-            docker build . --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
+            if [ -f ${d%/}Dockerfile ]; then
+              docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
+            fi
           done
         fi
         docker image ls
@@ -80,11 +84,13 @@ jobs:
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PWD}}
     - name: Build the Docker image
       run: |
-        if [ -f ./rootfs.tar.gz ]; then
+        if [ -f ./Dockerfile ]; then
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:latest
         else
           for d in */ ; do
-            docker build . --file ${d%/}Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
+            if [ -f ${d%/}Dockerfile ]; then
+              docker build ${d} --file ${d%/}/Dockerfile --tag ${{secrets.DOCKER_DEV_HOST}}/$PKG_NAME:${d%/}
+            fi
           done
         fi
         docker image ls
