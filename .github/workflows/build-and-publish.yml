@@ -49,8 +49,6 @@ jobs:
       uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v2
-      with:
-        name: rootfs
     - name: Login to Docker Registry
       run: docker login ${{secrets.DOCKER_DEV_HOST}} -u ${{secrets.DOCKER_DEV_USERNAME}} -p ${{secrets.DOCKER_DEV_PWD}}
     - name: Build the Docker image
@@ -78,8 +76,6 @@ jobs:
       uses: actions/checkout@v2
     - name: Download artifacts
       uses: actions/download-artifact@v2
-      with:
-        name: rootfs
     - name: Login to DockerHub
       run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PWD}}
     - name: Build the Docker image
