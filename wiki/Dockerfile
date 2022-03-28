@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
         --no-install-recommends \
         --fix-missing \
         --assume-yes \
-            git libxml2-dev libcurl4-gnutls-dev libonig-dev && \
+            libxml2-dev libcurl4-gnutls-dev libonig-dev && \
     apt-get clean autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
