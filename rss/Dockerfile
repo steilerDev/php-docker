@@ -12,5 +12,4 @@ ENV DEBIAN_FRONTEND noninteractive
     apt-get autoremove && \
     rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql && \
-    docker-php-ext-install mysqli pdo pdo_mysql pdo_pgsql gd opcache mbstring xml intl json curl fileinfo pcntl
+RUN docker-php-ext-install pdo pdo_pgsql gd opcache intl pcntl
