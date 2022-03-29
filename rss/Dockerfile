@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.0-fpm
 ENV DEBIAN_FRONTEND noninteractive
  
  RUN apt-get update && \
