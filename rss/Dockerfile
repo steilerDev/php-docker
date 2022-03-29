@@ -13,3 +13,6 @@ ENV DEBIAN_FRONTEND noninteractive
     rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN docker-php-ext-install pdo pdo_pgsql pgsql pdo_mysql gd opcache intl pcntl zip exif
+
+RUN sed 's/\(memory_limit =\) 128M/\1 256M/' $PHP_INI_DIR/php.ini-production \
+    > $PHP_INI_DIR/php.ini
