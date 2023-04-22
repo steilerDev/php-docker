@@ -12,4 +12,12 @@ ENV DEBIAN_FRONTEND noninteractive
     apt-get autoremove && \
     rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
-RUN docker-php-ext-install opcache mbstring xml intl json curl fileinfo pcntl
+RUN docker-php-ext-install \
+    opcache \
+    #mbstring \
+    #xml \
+    intl \
+    #json \
+    #curl \
+    #fileinfo \
+    pcntl
